@@ -1,0 +1,26 @@
+/* Editor de texto QUILL ajustes */
+.ql-editor.ql-blank::before {
+  font-style: normal;
+}
+.p-editor-content {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+}
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  border-color: #0284c7;
+}
+.autocomplete {
+  outline: none;
+  border: 1;
+  box-shadow: none;
+}
+.autocomplete:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #2c2c2c;
+}
+.p-inputtext:enabled:focus {
+  box-shadow: none;
+  border: 1;
+  border-color: #5a5a5a;
+}

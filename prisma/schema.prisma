@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Post {
+  id         Int             @id @default(autoincrement())
+  titulo     String
+  categorias CategoriaBlog[] @relation(references: [id])
+  textoCorto String
+  contenido  String
+  fechaPost  DateTime        @default(now())
+  publicado  Boolean         @default(false)
+  author     String
+  imagen     String
+  imagen2    String?
+}
+
+model CategoriaBlog {
+  id     Int    @id @default(autoincrement())
+  nombre String
+  posts  Post[] @relation(references: [id])
+}
+
+model Producto {
+  id             Int        @id @default(autoincrement())
+  sku            String
+  nombre         String     @unique
+  categoria      String     @default("")
+  proveedor      Proveedor? @relation(fields: [proveedorId], references: [id])
+  proveedorId    Int?
+  tipo           String     @default("G")
+  ecologico      Boolean    @default(false)
+  precioVenta    Float
+  coste          Float
+  stock          Float
+  low_stock      Float      @default(0)
+  numLote        String
+  iva            Int        @default(4)
+  imagen         String     @default("")
+  descripcion    String?    @default("") @db.Text
+  contenido      String?    @default("") @db.MediumText
+  slug           String?    @default("")    
+  slugCat        String?    @default("")
+  alergenos      String?    @default("")
+  alergenosCat   String?    @default("")
+  preparacion    String?    @default("")
+  preparacionCat String?    @default("")
+  conservacion   String?    @default("En un lugar fresco y seco")  
+  conservacionCat String?   @default("En un lloc fresc i sec")  
+  publicado      Boolean    @default(false)
+  descripcionCat String?    @db.Text
+  contenidoCat   String?    @db.MediumText
+  nombreCat      String?    @default("")
+}
+
+model Categoria {
+  id     Int    @id @default(autoincrement())
+  nombre String
+  imagen String @default("")
+}
+
+model Proveedor {
+  id        Int        @id @default(autoincrement())
+  nombre    String
+  tipo      String
+  contacto  String
+  email     String
+  cobros    String
+  reparto   String
+  productos Producto[]
+}
+
+model Pedido {
+  id            Int               @id @default(autoincrement())
+  proveedor     String
+  fecha         DateTime          @db.Date()
+  coste         Float
+  status        String
+  observaciones String?           @default("")
+  productos     PedidoProductos[]
+}
+
+model PedidoProductos {
+  id         Int     @id @default(autoincrement())
+  productoId Int
+  nombre     String
+  stock      Float
+  coste      Float
+  iva        Int
+  Pedido     Pedido? @relation(fields: [pedidoId], references: [id])
+  pedidoId   Int?
+}
+
+model ControlGastos {
+  id               Int       @id @default(autoincrement())
+  numFactura       String
+  coste            Float
+  fecha            DateTime  @default(now())
+  fechaVencimiento DateTime?
+  proveedor        String
+  status           String    @default("Pendiente")
+  tipo             String?
+}
+
+model EstadosPedidos {
+  id     Int     @id @default(1)
+  estado String
+}
+
+model TipoEnvio {
+  id    Int     @id @default(1)
+  envio String
+}
